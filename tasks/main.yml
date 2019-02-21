@@ -1,0 +1,27 @@
+---
+# tasks file for lshake.javakeystore
+- name: install java and keytool
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - java-1.8.0-openjdk-headless
+
+- name: slurp the private key
+  slurp:
+    src: "{{ javakeystore_src_private_key }}"
+  register: javakeystore_private_key
+
+- name: slurp the certificate
+  slurp:
+    src: "{{ javakeystore_src_certificate }}"
+  register: javakeystore_certificate
+
+- name: create the keystore file
+  java_keystore:
+    name: default
+    certificate: "{{ javakeystore_certificate.content | b64decode }}"
+    private_key: "{{ javakeystore_private_key.content | b64decode }}"
+    password: "{{ javakeystore_pass }}"
+    dest: "{{ javakeystore_dst }}"
+    mode: 0600

@@ -1,0 +1,6 @@
+---
+# defaults file for lshake.javakeystore
+javakeystore_src_private_key: /etc/pki/tls/private/{{ ansible_fqdn }}.key
+javakeystore_src_certificate: /etc/pki/tls/certs/{{ ansible_fqdn }}.crt
+javakeystore_dst: "~/{{ ansible_fqdn }}.keystore"
+javakeystore_pass: "changeit"
